@@ -7,11 +7,34 @@ Add your answers inline, below, with your pull request.
 1. List all of the main states a process may be in at any point in time on a
    standard Unix system. Briefly explain what each of these states mean.
 
+   * Created: Temporary state when a process is created. 
+   * Ready: Process is waiting to be assigned to a CPU core/processor by the OS.
+   * Running: Once the process has been assigned to a processor by the OS scheduler, the process state is set to running and the processor executes its instructions.
+   * Waiting: Process moves into the waiting state if it needs to wait for a resource, such as waiting for user input, or waiting for a file to become available.
+   * Terminated: Once the process finishes its execution, or it is terminated by the operating system, it is moved to the terminated state where it waits to be removed from main memory.
+   
+
 2. What is a Zombie Process? How does it get created? How does it get destroyed?
+A Zombie Process is a process that has executed completely, but still has an entry in the 
+process table. This happens when a parent process does not use the wait system call after a 
+child dies to read its exit status. When a child process terminates before the parent has 
+called wait, the kernel retains some information about the process, such as its exit status, 
+to enable its parent to use the wait system call later. Because the child is still consuming 
+system resources, but not executing, it is known as a zombie process. 
+
+My question: At this point, I believe I understand that the parent reaps the status of the child and then it is removed from the process table, but what does it really mean to reap the status of the child since it is terminating? Does this just mean that the parent takes on the child process ID as is the case when a child process is dying?
+
 
 3. Describe the job of the Scheduler in the OS in general.
+The purpose of the Scheduler is to decide when to run any given process at any time.
 
 4. Describe the benefits of the MLFQ over a plain Round-Robin scheduler.
+The benefit of using MLFQ over a RR scheduler is that it assigns priority to processes based
+on the behaviour of the observed process. So, it is able to evaluate what process is an
+urgent request and allot the appropriate resources to ensure it is being served first. 
+With a RR scheduler, urgent requests do not have priority as all requests are seen as equal 
+and thus distributed all at once. With a RR scheduler, each process is given the same short 
+period of time to make progress on their execution and when that time is up, the next process begins its work toward its execution. If they don't complete in that time section, it stops and waits until the RR comes back around to them and it's given the same amount of time to make progress on its execution. This continues until all processes are complete. This can be burdensome for performance.  
 
 ## Programming Exercise: The Lambda School Shell (`lssh`)
 

@@ -89,6 +89,16 @@ int main(void)
             break;
         }
 
+        pid_t child_P = fork();
+        if (child_P == -1) {
+            printf("Cannot compute\n");            
+        } else if (child_P > 0) {
+            int status;
+            waitpid(child_P, &status, 0);
+        } else {
+            execvp(args[0], &args[0]);
+        }
+
         #if DEBUG
 
         // Some debugging output
@@ -99,6 +109,7 @@ int main(void)
         }
 
         #endif
+
     }
 
     return 0;
